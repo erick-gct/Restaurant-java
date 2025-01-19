@@ -63,7 +63,7 @@ public class UserInterface_GUI extends JFrame implements ActionListener
     private EditMenuItemPanel       cEditMenuItemPanel;
     private TotalSalesPanel       cTotalSalesPanel;
 
-   // private PaymentPanel        cPaymentPanel;
+    private PaymentPanel        cPaymentPanel;
 
 
     private final static int WINDOW_X = 100;
@@ -122,8 +122,8 @@ public class UserInterface_GUI extends JFrame implements ActionListener
         mainPanel.add("TotalSalesPanel", cTotalSalesPanel);
 
 
-        // DESCOMENTAR ESTO cPaymentPanel = new PaymentPanel();
-        //DESCOMENTAR ESTO mainPanel.add("PaymentPanel", cPaymentPanel);
+         cPaymentPanel = new PaymentPanel();
+        mainPanel.add("PaymentPanel", cPaymentPanel);
         
         changeMode(MODE_ANONYMOUS);
     }
@@ -195,9 +195,9 @@ public class UserInterface_GUI extends JFrame implements ActionListener
         mainBtnShowTotalSales.addActionListener(this);
         mainBtnsPanel.add(mainBtnShowTotalSales);
         
-       // mainBtnShowPayment = new JButton("Mostrar pagos");
-       // mainBtnShowPayment.addActionListener(this);
-       // mainBtnsPanel.add(mainBtnShowPayment);
+       mainBtnShowPayment = new JButton("Mostrar pagos");
+       mainBtnShowPayment.addActionListener(this);
+       mainBtnsPanel.add(mainBtnShowPayment);
         
         con.add(mainBtnsPanel, BorderLayout.WEST);
         
@@ -251,7 +251,7 @@ public class UserInterface_GUI extends JFrame implements ActionListener
                 mainBtnManageEmployee.setEnabled(false);
                 mainBtnManageMenuItem.setEnabled(false);
                 mainBtnShowTotalSales.setEnabled(false);
-       //         mainBtnShowPayment.setEnabled(false);
+                mainBtnShowPayment.setEnabled(false);
                 break;
             case MODE_EMPLOYEE:
                 headBtnLogout.setEnabled(true);
@@ -260,7 +260,7 @@ public class UserInterface_GUI extends JFrame implements ActionListener
                 mainBtnManageEmployee.setEnabled(false);
                 mainBtnManageMenuItem.setEnabled(false);
                 mainBtnShowTotalSales.setEnabled(false);
-          //      mainBtnShowPayment.setEnabled(false);
+                mainBtnShowPayment.setEnabled(false);
                 break;
            case MODE_MANAGER:
                 headBtnLogout.setEnabled(true);
@@ -269,7 +269,7 @@ public class UserInterface_GUI extends JFrame implements ActionListener
                 mainBtnManageEmployee.setEnabled(true);
                 mainBtnManageMenuItem.setEnabled(true);
                 mainBtnShowTotalSales.setEnabled(true);
-       //         mainBtnShowPayment.setEnabled(true);
+               mainBtnShowPayment.setEnabled(true);
                 break;
         }
     }
@@ -2059,6 +2059,83 @@ public class UserInterface_GUI extends JFrame implements ActionListener
 
     //aqui va lo otro
 
+
+    /****************************************************************
+     * Payment panel
+     *****************************************************************/
+    private class PaymentPanel extends JPanel implements ActionListener
+    {
+        private JScrollPane     scrollPanel;
+        private JTextArea       displayArea;
+        private JButton         btnPrint;
+        private JButton         btnAllClockOut;
+
+        public PaymentPanel()
+        {
+            GridBagLayout gbLayout = new GridBagLayout();
+            this.setLayout( gbLayout);
+            GridBagConstraints gbc = new GridBagConstraints();
+
+            displayArea = new JTextArea();
+            displayArea.setFont(new Font(Font.MONOSPACED,Font.PLAIN,16));
+            displayArea.setEditable(false);
+            displayArea.setMargin(new Insets(5, 5, 5, 5));
+            scrollPanel = new JScrollPane(displayArea);
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth = 2;
+            gbc.weightx = 1.0;
+            gbc.weighty = 1.0;
+            gbc.insets = new Insets(5, 5, 5, 5);
+            gbc.fill = GridBagConstraints.BOTH;
+            gbLayout.setConstraints(scrollPanel, gbc);
+            this.add(scrollPanel);
+
+            btnPrint = new JButton("Create payment report file");
+            btnPrint.addActionListener(this);
+            gbc.gridx = 0;
+            gbc.gridy = 1;
+            gbc.gridwidth = 1;
+            gbc.weighty = 0;
+            gbLayout.setConstraints(btnPrint, gbc);
+            this.add(btnPrint);
+
+            btnAllClockOut = new JButton("Clock out for all staff");
+            btnAllClockOut.addActionListener(this);
+            gbc.gridx = 1;
+            gbc.gridy = 1;
+            gbc.gridwidth = 1;
+            gbc.weighty = 0;
+            gbLayout.setConstraints(btnAllClockOut, gbc);
+            this.add(btnAllClockOut);
+        }
+
+
+
+        public void init()
+        {
+            displayArea.setText(rcController.createPaymentList());
+        }
+
+        public void actionPerformed(ActionEvent ae) {
+            if (ae.getSource() == btnPrint)
+            {
+                String createFineName = rcController.generatePaymentReport();
+                if( createFineName == null)
+                    displayErrorMessage(rcController.getErrorMessage());
+                else
+                    displayMessage(createFineName + " have been generated.");
+            }
+            else if (ae.getSource() == btnAllClockOut)
+            {
+                if (showYesNoDialog("", "Are you sure to meke all staff clocked out?") == DIALOG_YES)
+                {
+                    rcController.clockOutAll();
+                    init();
+                }
+            }
+        }
+    }
 
 
 
