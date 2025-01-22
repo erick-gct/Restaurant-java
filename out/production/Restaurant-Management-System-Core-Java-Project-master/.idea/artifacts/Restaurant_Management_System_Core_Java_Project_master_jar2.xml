@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Restaurant-Management-System-Core-Java-Project-master:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/Restaurant_Management_System_Core_Java_Project_master_jar2</output-path>
+    <root id="archive" name="Restaurant-Management-System-Core-Java-Project-master.jar">
+      <element id="module-output" name="Restaurant-Management-System-Core-Java-Project-master" />
+    </root>
+  </artifact>
+</component>

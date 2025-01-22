@@ -1,5 +1,6 @@
 *********** Order List (2025_01_19) ***********
-Order ID:   1  StaffName:Hello Java                      Total:$0,00  
-Order ID:   2  StaffName:Hello Java                      Total:$12,95 
+Order ID:   1  StaffName:Hello Java                      Total:$80,00 
+Order ID:   2  StaffName:Hello Java                      Total:$26,50 
+Order ID:   3  StaffName:Hello Java                      Total:$0,00  
 -------------------------------------------------------
-Total sales:$12.95(2)  Canceled:$0.0(0)
+Total sales:$106.5(3)  Canceled:$0.0(0)
